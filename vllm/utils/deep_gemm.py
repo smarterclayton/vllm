@@ -21,9 +21,11 @@ def is_blackwell_deep_gemm_used() -> bool:
     """Return ``True`` if vLLM is configured to use DeepGEMM on a
     Blackwell-class GPU.
     """
+    if not (envs.VLLM_USE_DEEP_GEMM and has_deep_gemm()):
+        return False
 
-    if not (envs.VLLM_USE_DEEP_GEMM and has_deep_gemm()
-            and _per_block_cast_impl is not None):
+    _lazy_init()
+    if _per_block_cast_impl is None:
         return False
 
     return cuda_get_device_properties(0, ("major", ))[0] == 10
