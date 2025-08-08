@@ -730,6 +730,7 @@ class FusedMoEModularKernel(torch.nn.Module):
         - torch.Tensor: The output tensor after applying the MoE layer.
         """
 
+        return hidden_states
         a1 = hidden_states
         output = a1 if inplace else torch.zeros_like(a1)
 
