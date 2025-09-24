@@ -169,6 +169,8 @@ class FusedMoEMethodBase(QuantizeMethodBase):
         elif moe.use_deepep_ht_kernels:
             assert moe.dp_size == all2all_manager.dp_world_size
 
+            os.environ["LOCAL_RANK"] = get_world_group().local_rank
+
             all_to_all_args = dict()
             handle = all2all_manager.get_handle(all_to_all_args)
             prepare_finalize = DeepEPHTPrepareAndFinalize(
@@ -181,6 +183,9 @@ class FusedMoEMethodBase(QuantizeMethodBase):
 
         elif moe.use_deepep_ll_kernels:
             assert quant_config is not None
+
+            os.environ["LOCAL_RANK"] = get_world_group().local_rank
+
             all_to_all_args = dict(
                 max_num_tokens_per_dp_rank=moe.max_num_tokens,
                 token_hidden_size=moe.hidden_dim,
