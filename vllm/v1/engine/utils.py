@@ -166,10 +166,7 @@ def set_device_control_env_var(vllm_config: VllmConfig,
     evar = current_platform.device_control_env_var
 
     value = get_device_indices(evar, local_dp_rank, world_size)
-    local_rank = value.split(",", 2)[0]
-    logger.debug("Will set LOCAL_RANK to %s from %s", local_rank, value)
-    with patch.dict(os.environ, values=(
-        (evar, value), ("LOCAL_RANK", local_rank))):
+    with patch.dict(os.environ, values=((evar, value), )):
         yield
 
 
