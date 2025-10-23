@@ -478,7 +478,7 @@ class NixlConnectorWorker:
             config = None
         else:
             config = nixl_agent_config(backends=self.nixl_backends) if len(
-                non_ucx_backends) > 0 else nixl_agent_config(num_threads=8)
+                non_ucx_backends) > 0 else nixl_agent_config(num_threads=0)
 
         self.nixl_wrapper = NixlWrapper(str(uuid.uuid4()), config)
         # Map of engine_id -> {rank0: agent_name0, rank1: agent_name1..}.
